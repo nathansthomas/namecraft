@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>namecraft - Startup Name Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            dark: {
+              bg: '#0a0a0b',
+              surface: '#141415',
+              border: '#232326',
+              hover: '#1c1c1e',
+              text: '#ededef',
+              muted: '#8a8a8e',
+              accent: '#6366f1'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #0a0a0b; }
+    .gradient-border {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #6366f1 100%);
+      padding: 1px;
+      border-radius: 0.5rem;
+    }
+    .gradient-border > div {
+      background: #141415;
+      border-radius: calc(0.5rem - 1px);
+    }
+    .name-card {
+      transition: all 0.15s ease;
+    }
+    .name-card:hover {
+      background: #1c1c1e;
+    }
+    .kbd {
+      background: #232326;
+      border: 1px solid #323236;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    input:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+    .domain-link {
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .name-card:hover .domain-link {
+      opacity: 1;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeIn 0.2s ease forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-dark-text font-sans antialiased">
+  <div class="max-w-2xl mx-auto px-6 py-16">
+    <!-- Header -->
+    <header class="mb-12">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-2xl">~</span>
+        <h1 class="text-xl font-semibold tracking-tight">namecraft</h1>
+      </div>
+      <p class="text-dark-muted text-sm">Generate startup names. Check domains. Ship faster.</p>
+    </header>
+
+    <!-- Input Section -->
+    <div class="mb-8">
+      <div class="gradient-border mb-4">
+        <div class="p-1">
+          <input
+            type="text"
+            id="ideaInput"
+            placeholder="Describe your startup idea..."
+            class="w-full bg-transparent px-4 py-3 text-dark-text placeholder-dark-muted focus:outline-none text-sm"
+            autofocus
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button
+          id="generateBtn"
+          class="bg-dark-accent hover:bg-indigo-500 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+        >
+          Generate names
+        </button>
+        <span class="text-dark-muted text-xs flex items-center gap-2">
+          <span class="kbd">Enter</span> to generate
+        </span>
+      </div>
+    </div>
+
+    <!-- AI Option -->
+    <div class="mb-8 p-4 bg-dark-surface border border-dark-border rounded-lg">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-medium">AI Mode</span>
+          <span class="text-[10px] bg-dark-accent/20 text-dark-accent px-2 py-0.5 rounded-full font-medium">BYOK</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="aiToggle" class="sr-only peer">
+          <div class="w-9 h-5 bg-dark-border rounded-full peer peer-checked:bg-dark-accent transition-colors"></div>
+          <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-dark-muted rounded-full peer-checked:translate-x-4 peer-checked:bg-white transition-all"></div>
+        </label>
+      </div>
+      <div id="apiKeySection" class="hidden">
+        <input
+          type="password"
+          id="apiKeyInput"
+          placeholder="Enter your OpenAI API key..."
+          class="w-full bg-dark-bg border border-dark-border rounded-md px-3 py-2 text-sm text-dark-text placeholder-dark-muted mb-2"
+        />
+        <p class="text-dark-muted text-xs">Your key stays in your browser. Never sent to our servers.</p>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="space-y-2">
+      <!-- Generated names will appear here -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="text-center py-16">
+      <p class="text-dark-muted text-sm">Enter your idea and hit generate</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-16 pt-8 border-t border-dark-border">
+      <p class="text-dark-muted text-xs text-center">
+        Built by <a href="https://github.com/nathansthomas" class="text-dark-text hover:text-dark-accent transition-colors">@nathansthomas</a>
+      </p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
